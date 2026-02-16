@@ -1,41 +1,39 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { OrganizationsModule } from './modules/organization/organization.module';
+
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'postgres',
+      useFactory: (config: ConfigService) => {
+        const isTest = config.get<string>('NODE_ENV') === 'test';
+        if (isTest) {
+          return {
+            type: 'better-sqlite3',
+            database: ':memory:',
+            autoLoadEntities: true,
+            synchronize: true,
+          };
+        }
+        return {
+          type: 'postgres',
+          host: config.get('DB_HOST', 'localhost'),
+          port: parseInt(config.get('DB_PORT', '5432'), 10),
+          username: config.get('DB_USER', 'postgres'),
+          password: config.get('DB_PASSWORD', 'postgres'),
+          database: config.get('DB_NAME', 'sdevsapi_db'),
 
-        host: config.get<string>('DB_HOST'),
-        port: config.get<number>('DB_PORT'),
-        username: config.get<string>('DB_USER'),
-        password: config.get<string>('DB_PASS'),
-        database: config.get<string>('DB_NAME'),
-
-        autoLoadEntities: true,
-        synchronize: true, // ⚠️ только для dev!
-      }),
+          autoLoadEntities: true,
+          synchronize: true,
+        };
+      },
     }),
-    ThrottlerModule.forRoot({
-      throttlers: [
-        {
-          ttl: 60,
-          limit: 10,
-        },
-      ],
-    }),
-    AuthModule,
+    OrganizationsModule,
   ],
-  controllers: [],
-  providers: [{
-    provide: APP_GUARD,
-    useClass: ThrottlerGuard,
-  },],
 })
-export class AppModule { }
+export class AppModule {}

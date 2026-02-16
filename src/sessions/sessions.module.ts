@@ -6,6 +6,6 @@ import { Session } from './sessions.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Session])],
   providers: [SessionsService],
-  exports: [SessionsService]
+  exports: [SessionsService],
 })
 export class SessionsModule {}

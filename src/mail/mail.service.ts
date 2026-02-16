@@ -30,13 +30,11 @@ export class MailService {
     await this.sendMail(email, 'Подтверждение регистрации', html);
   }
 
-
   async sendResetPassword(email: string, link: string) {
     const html = TemplateRenderer.render('reset-password', { link });
 
     await this.sendMail(email, 'Сброс пароля', html);
   }
-
 
   private async sendMail(to: string, subject: string, html: string) {
     try {

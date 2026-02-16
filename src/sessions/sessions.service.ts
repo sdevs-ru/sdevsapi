@@ -1,13 +1,13 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { Session } from "./sessions.entity";
-import { User } from "src/users/users.entity";
-import dayjs from "dayjs";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Session } from './sessions.entity';
+import { User } from 'src/users/users.entity';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class SessionsService {
-  constructor(@InjectRepository(Session) private repo: Repository<Session>) { }
+  constructor(@InjectRepository(Session) private repo: Repository<Session>) {}
 
   async create(user: User, refreshHash: string, sessionId: string) {
     const session = this.repo.create({

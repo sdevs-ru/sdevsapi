@@ -1,12 +1,18 @@
-import { User } from "src/users/users.entity";
-import { Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { User } from 'src/users/users.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('sessions')
 export class Session {
   @PrimaryColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, u => u.sessions)
+  @ManyToOne(() => User, (u) => u.sessions)
   user: User;
 
   @Column()

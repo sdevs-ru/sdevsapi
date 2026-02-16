@@ -6,20 +6,19 @@ import { RolesGuard } from 'src/roles/roles.guard';
 
 @Controller('users')
 export class UsersController {
+  constructor(private users: UsersService) {}
 
-    constructor(private users: UsersService) { }
+  @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  findAllUsers() {
+    return this.users.findAll();
+  }
 
-    @Get()
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('ADMIN')
-    findAllUsers() {
-        return this.users.findAll();
-    }
-
-    @Delete(':id')
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('ADMIN')
-    removeUser(@Param('id') id: string) {
-        return this.users.delete(id);
-    }
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  removeUser(@Param('id') id: string) {
+    return this.users.delete(id);
+  }
 }

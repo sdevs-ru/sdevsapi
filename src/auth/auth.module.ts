@@ -21,11 +21,11 @@ import { RolesGuard } from './roles.guard';
         },
       }),
     }),
-    UsersModule, 
-    RolesModule, 
-    SessionsModule
+    UsersModule,
+    RolesModule,
+    SessionsModule,
   ],
   providers: [AuthService, JwtStrategy, RolesGuard],
-  controllers: [AuthController]
+  controllers: [AuthController],
 })
 export class AuthModule {}

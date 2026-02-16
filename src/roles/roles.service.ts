@@ -1,13 +1,15 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Role } from "./roles.entity";
-import { Repository } from "typeorm";
-import { User } from "src/users/users.entity";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Role } from './roles.entity';
+import { Repository } from 'typeorm';
+import { User } from 'src/users/users.entity';
 
 @Injectable()
 export class RolesService {
-  constructor(@InjectRepository(Role) private repo: Repository<Role>,
-    @InjectRepository(User) private usersRepo: Repository<User>) { }
+  constructor(
+    @InjectRepository(Role) private repo: Repository<Role>,
+    @InjectRepository(User) private usersRepo: Repository<User>,
+  ) {}
 
   async getDefaultRole() {
     let role = await this.repo.findOne({ where: { name: 'USER' } });
@@ -38,7 +40,7 @@ export class RolesService {
       relations: ['roles'],
     });
 
-    user!.roles = user!.roles.filter(r => r.name !== roleName);
+    user!.roles = user!.roles.filter((r) => r.name !== roleName);
     return this.usersRepo.save(user!);
   }
 }

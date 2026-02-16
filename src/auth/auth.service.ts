@@ -1,13 +1,17 @@
-import { ConflictException, Injectable, UnauthorizedException } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { RolesService } from "src/roles/roles.service";
-import { SessionsService } from "src/sessions/sessions.service";
-import { UsersService } from "src/users/users.service";
-import { RegisterDto } from "./dto/register.dto";
-import * as bcrypt from "bcrypt";
-import { User } from "src/users/users.entity";
-import { randomUUID } from "crypto";
-import { ConfigService } from "@nestjs/config";
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { RolesService } from 'src/roles/roles.service';
+import { SessionsService } from 'src/sessions/sessions.service';
+import { UsersService } from 'src/users/users.service';
+import { RegisterDto } from './dto/register.dto';
+import * as bcrypt from 'bcrypt';
+import { User } from 'src/users/users.entity';
+import { randomUUID } from 'crypto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +21,7 @@ export class AuthService {
     private roles: RolesService,
     private sessions: SessionsService,
     private jwt: JwtService,
-  ) { }
+  ) {}
 
   async register(dto: RegisterDto) {
     const existing = await this.users.findByEmail(dto.email);
@@ -34,7 +38,6 @@ export class AuthService {
     return tokens;
   }
 
-
   async login(user: User) {
     const sessionId = randomUUID();
 
@@ -44,7 +47,6 @@ export class AuthService {
     await this.sessions.create(user, refreshHash, sessionId);
     return tokens;
   }
-
 
   async refresh(refreshToken: string) {
     const payload = await this.jwt.verifyAsync(refreshToken, {
@@ -57,7 +59,10 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const isValid = await bcrypt.compare(refreshToken, session.refreshTokenHash);
+    const isValid = await bcrypt.compare(
+      refreshToken,
+      session.refreshTokenHash,
+    );
 
     if (!isValid) {
       throw new UnauthorizedException();
@@ -85,12 +90,11 @@ export class AuthService {
     return this.login(user);
   }
 
-
   async generateTokens(user: User, sessionId: string) {
-    console.log(user)
+    console.log(user);
     const payload = {
       sub: user.id,
-      roles: user.roles.map(r => r.name),
+      roles: user.roles.map((r) => r.name),
       sid: sessionId,
     };
 
@@ -106,5 +110,4 @@ export class AuthService {
 
     return { accessToken, refreshToken };
   }
-
 }
