@@ -1,4 +1,4 @@
-import { Organization } from 'src/modules/organization/domain/organization.entity';
+import { Organization } from 'src/modules/organization/domain/entities/organization.entity';
 
 describe('Organization domain', () => {
   it('adds member', () => {

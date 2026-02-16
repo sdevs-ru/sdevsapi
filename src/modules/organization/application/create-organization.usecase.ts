@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
-import { Organization } from '../domain/organization.entity';
-import { ORGANIZATION_REPOSITORY } from '../domain/organization.repository';
-import type { OrganizationRepository } from '../domain/organization.repository';
+import { Organization } from '../domain/entities/organization.entity';
+import { ORGANIZATION_REPOSITORY } from '../domain/repositories/organization.repository';
+import type { OrganizationRepository } from '../domain/repositories/organization.repository';
 
 export class CreateOrganizationUseCase {
   constructor(

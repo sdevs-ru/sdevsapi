@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Organization } from '../domain/organization.entity';
-import { OrganizationRepository } from '../domain/organization.repository';
+import { Organization } from '../domain/entities/organization.entity';
+import { OrganizationRepository } from '../domain/repositories/organization.repository';
 import { OrganizationMapper } from './mapper/organization.mapper';
 import { OrganizationOrmEntity } from './orm/organization.orm-entity';
 import { MembershipOrmEntity } from './orm/membership.orm-entity';

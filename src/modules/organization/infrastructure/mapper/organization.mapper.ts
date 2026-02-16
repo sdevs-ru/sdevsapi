@@ -1,14 +1,14 @@
-import { Membership } from '../../domain/membership.entity';
-import { Organization } from '../../domain/organization.entity';
-import { MembershipOrmEntity } from '../orm/membership.orm-entity';
-import { OrganizationOrmEntity } from '../orm/organization.orm-entity';
+import { Membership } from "../../domain/entities/membership.entity";
+import { Organization } from "../../domain/entities/organization.entity";
+import { MembershipOrmEntity } from "../orm/membership.orm-entity";
+import { OrganizationOrmEntity } from "../orm/organization.orm-entity";
 
 export class OrganizationMapper {
   static toDomain(entity: OrganizationOrmEntity): Organization {
     const org = new Organization(entity.id, entity.name);
 
     const memberships = entity.memberships.map(
-      (m) => new Membership(m.userId, m.role, m.joinedAt),
+      m => new Membership(m.userId, m.role, m.joinedAt),
     );
 
     org.loadMemberships(memberships);
@@ -20,7 +20,7 @@ export class OrganizationMapper {
     orm.id = domain.id;
     orm.name = domain.name;
 
-    orm.memberships = domain.getMembers().map((m) => {
+    orm.memberships = domain.getMembers().map(m => {
       const mem = new MembershipOrmEntity();
       mem.userId = m.userId;
       mem.organizationId = domain.id;

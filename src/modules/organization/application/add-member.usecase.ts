@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
-import { ORGANIZATION_REPOSITORY } from '../domain/organization.repository';
-import type { OrganizationRepository } from '../domain/organization.repository';
+import { ORGANIZATION_REPOSITORY } from '../domain/repositories/organization.repository';
+import type { OrganizationRepository } from '../domain/repositories/organization.repository';
 
 export class AddMemberUseCase {
   constructor(

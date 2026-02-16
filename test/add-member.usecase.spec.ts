@@ -1,6 +1,6 @@
-import { AddMemberUseCase } from 'src/modules/organization/application/add-member.usecase';
-import { Organization } from 'src/modules/organization/domain/organization.entity';
-import { OrganizationRepository } from 'src/modules/organization/domain/organization.repository';
+import { AddMemberUseCase } from "src/modules/organization/application/add-member.usecase";
+import { Organization } from "src/modules/organization/domain/entities/organization.entity";
+import { OrganizationRepository } from "src/modules/organization/domain/repositories/organization.repository";
 
 class FakeRepo implements OrganizationRepository {
   org = new Organization('org-1', 'Acme');
