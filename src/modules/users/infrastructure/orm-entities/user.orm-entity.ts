@@ -1,10 +1,12 @@
+import { RoleOrmEntity } from 'src/modules/roles/infrastructure/orm-entities';
 import {
     Column,
     Entity,
+    JoinTable,
+    ManyToMany,
     OneToMany,
     PrimaryColumn,
 } from 'typeorm';
-import { RoleOrmEntity } from './role.orm-entity';
 
 @Entity('users')
 export class UserOrmEntity {
@@ -14,9 +16,11 @@ export class UserOrmEntity {
     @Column({ unique: true })
     email: string;
 
-    @OneToMany(() => RoleOrmEntity, (role) => role.user, {
-        cascade: true,
-        eager: true,
+    @ManyToMany(() => RoleOrmEntity)
+    @JoinTable({
+        name: 'user_roles',
+        joinColumn: { name: 'user_id' },
+        inverseJoinColumn: { name: 'role_id' },
     })
     roles: RoleOrmEntity[];
 }

@@ -1,26 +1,26 @@
-import { Role } from './role.entity';
-
 export class User {
-  private roles: Role[] = [];
-
   constructor(
     public readonly id: string,
     public email: string,
-  ) {}
+    private roleIds: string[] = [],
+  ) { }
 
-  assignRole(role: Role) {
-    if (this.roles.find((r) => r.id === role.id)) {
+  assignRole(roleId: string) {
+    if (this.roleIds.includes(roleId)) {
       return;
     }
 
-    this.roles.push(role);
+    this.roleIds.push(roleId);
   }
 
   removeRole(roleId: string) {
-    this.roles = this.roles.filter((r) => r.id !== roleId);
+    this.roleIds = this.roleIds.filter(id => id !== roleId);
   }
 
-  hasRole(name: string): boolean {
-    return this.roles.some((r) => r.name === name);
+  hasRole(roleId: string): boolean {
+    return this.roleIds.includes(roleId);
+  }
+  getRoleIds(): string[] {
+    return [...this.roleIds];
   }
 }

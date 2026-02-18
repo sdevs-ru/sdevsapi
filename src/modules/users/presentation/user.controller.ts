@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Delete, HttpCode } from '@nestjs/common';
 import { AssignRoleUseCase, CreateUserUseCase, GetUserUseCase, RemoveRoleUseCase } from '../application/usecases';
 
 
@@ -17,17 +17,23 @@ export class UsersController {
         return this.createUser.execute({ email });
     }
 
-    @Post(':id/roles')
+    @Post(':userId/roles/:roleId')
+    @HttpCode(200)
     assign(
-        @Param('id') userId: string,
-        @Body() body: { roleId: string; roleName: string },
+        @Param('userId') userId: string,
+        @Param('roleId') roleId: string,
     ) {
-        return this.assignRole.execute({ userId, ...body });
+        return this.assignRole.execute(userId, roleId);
     }
 
-    @Delete(':id/roles/:roleId')
-    remove(@Param('id') userId: string, @Param('roleId') roleId: string) {
-        return this.removeRole.execute({ userId, roleId });
+
+    @Delete(':userId/roles/:roleId')
+    @HttpCode(200)
+    remove(
+        @Param('userId') userId: string,
+        @Param('roleId') roleId: string,
+    ) {
+        return this.removeRole.execute(userId, roleId);
     }
 
     @Get(':id')
